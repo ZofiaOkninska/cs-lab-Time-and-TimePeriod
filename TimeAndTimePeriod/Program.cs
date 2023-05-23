@@ -7,8 +7,11 @@ namespace TimeAndTimePeriod
         static void Main(string[] args)
         {
             // Example of Time struct usage
-            Time time1 = new Time(12, 30, 0);
-            Time time2 = new Time(10, 30);
+            Time time1 = new Time(12, 37, 4);
+            Time time2 = new Time(19);
+
+            Console.WriteLine(time1.ToString());
+            Console.WriteLine(time2.ToString());
         }
     }
 

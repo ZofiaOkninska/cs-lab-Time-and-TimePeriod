@@ -61,4 +61,11 @@ public class UnitTest1
         Assert.ThrowsException<ArgumentException>(() => new Time("12:60:03"));
     }
 
+    [TestMethod]
+    public void TimeToStringProducesValidResult()
+    {
+        Time time = new Time(1,59,5);
+        Assert.AreEqual("01:59:05", time.ToString());
+    }
+
 }
