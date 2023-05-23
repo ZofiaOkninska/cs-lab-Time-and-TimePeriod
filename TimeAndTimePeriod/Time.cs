@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TimeAndTimePeriod
 {
-    public struct Time
+    public struct Time : IEquatable<Time>
     {
         #region External properties
         public byte Hours { get; }
@@ -53,5 +53,27 @@ namespace TimeAndTimePeriod
         {
             return $"{Hours:D2}:{Minutes:D2}:{Seconds:D2}";
         }
+
+        #region Implementation of IEquatable<Time>
+        public override bool Equals(object obj)
+        {
+            if (obj is Time)
+                return Equals((Time)obj);
+            return false;
+        }
+
+        public bool Equals(Time other)
+        {
+            return (Hours == other.Hours && Minutes == other.Minutes && Seconds == other.Seconds);
+        }
+
+        public static bool Equals(Time time1, Time time2) => time1.Equals(time2);
+
+        public override int GetHashCode() => (Hours, Minutes, Seconds).GetHashCode();
+
+        public static bool operator ==(Time leftSide, Time rightSide) => leftSide.Equals(rightSide);
+
+        public static bool operator !=(Time leftSide, Time rightSide) => !(leftSide.Equals(rightSide));
+        #endregion
     }
 }

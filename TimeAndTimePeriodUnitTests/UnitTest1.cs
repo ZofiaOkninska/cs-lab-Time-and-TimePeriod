@@ -1,4 +1,6 @@
 namespace TimeAndTimePeriodUnitTests;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TimeAndTimePeriod;
 
 [TestClass]
@@ -66,6 +68,30 @@ public class UnitTest1
     {
         Time time = new Time(1,59,5);
         Assert.AreEqual("01:59:05", time.ToString());
+    }
+
+    [TestMethod]
+    public void TimeEqualsForOtherThanTimeTypeReturnsFalse()
+    {
+        Time time1 = new Time(10, 20, 30);
+        string str = "12:23:03";
+        Assert.IsFalse(time1.Equals(str));
+    }
+
+    [TestMethod]
+    public void TimeEqualsForTwoEqualTimesReturnsTrue()
+    {
+        Time time1 = new Time(10, 20, 30);
+        Time time2 = new Time(10, 20, 30);
+        Assert.IsTrue(time1.Equals(time2));
+    }
+
+    [TestMethod]
+    public void TimeEqualsWithTwoParametersForTwoEqualTimesReturnsTrue()
+    {
+        Time time1 = new Time(10, 20, 30);
+        Time time2 = new Time(10, 20, 30);
+        Assert.IsTrue(Equals(time1,time2));
     }
 
 }
