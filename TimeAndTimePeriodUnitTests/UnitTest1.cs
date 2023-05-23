@@ -5,6 +5,8 @@ using TimeAndTimePeriod;
 [TestClass]
 public class UnitTest1
 {
+    // Time tests
+
     [TestMethod]
     public void TimeConstructorInvalidHourValueThrowsArgumentException()
     {
@@ -203,5 +205,72 @@ public class UnitTest1
         bool result = time1 >= time2;
 
         Assert.AreEqual(expectedResult, result);
+    }
+
+    // TimePeriod tests
+
+    [TestMethod]
+    public void TimePeriodConstructorInvalidMinuteValueThrowsArgumentException()
+    {
+        Assert.ThrowsException<ArgumentException>(() => new TimePeriod(29, 60, 6));
+    }
+
+    [TestMethod]
+    public void TimePeriodConstructorInvalidSecondValueThrowsArgumentException()
+    {
+        Assert.ThrowsException<ArgumentException>(() => new TimePeriod(29, 40, 60));
+    }
+
+    [TestMethod]
+    public void TimePeriodConstructorTotalSecondsSmallerThanZeroThrowsArgumentException()
+    {
+        Assert.ThrowsException<ArgumentException>(() => new TimePeriod(-30));
+    }
+
+    [TestMethod]
+    public void TimePeriodConstructorWithoutSecondsPassedReturnsTimePeriodObject()
+    {
+        TimePeriod timeP = new TimePeriod(3, 44);
+        Assert.AreEqual(3 * 3600L + 44 * 60L + 0, timeP.TotalSeconds);
+    }
+
+    [TestMethod]
+    public void TimePeriodConstructorWithoutHoursAndMinutesPassedReturnsTimePeriodObject()
+    {
+        TimePeriod timeP = new TimePeriod((byte)30);
+        Assert.AreEqual(0 * 3600L + 0 * 60L + 30, timeP.TotalSeconds);
+    }
+
+    [TestMethod]
+    public void TimePeriod_Constructor_StringFormat_ValidTimePeriod_ReturnsTimePeriodObject()
+    {
+        TimePeriod timeP = new TimePeriod("12:30:45");
+        Assert.AreEqual(12 * 3600L + 30 * 60L + 45, timeP.TotalSeconds);
+    }
+
+    [TestMethod]
+    public void TimePeriod_ConstructorStringFormatMissingValuesThrowsArgumentException()
+    {
+        Assert.ThrowsException<ArgumentException>(() => new TimePeriod("21:30"));
+    }
+
+    [TestMethod]
+    public void TimePeriod_ConstructorStringFormatInvalidValuesThrowsArgumentException()
+    {
+        Assert.ThrowsException<ArgumentException>(() => new TimePeriod("26:60:03"));
+    }
+
+    [TestMethod]
+    public void TimePeriod_Constructor_CalculatesTotalSecondsCorrectlyWithTwoTimeTypesGiven()
+    {
+        Time startTime = new Time(10, 30, 0);
+        Time endTime = new Time(12, 15, 30);
+
+        //long startSeconds = startTime.Hours * 3600L + startTime.Minutes * 60L + startTime.Seconds;
+        //long endSeconds = endTime.Hours * 3600L + endTime.Minutes * 60L + endTime.Seconds;
+
+        TimePeriod timePeriod = new TimePeriod(startTime, endTime);
+
+        Assert.AreEqual(6330L, timePeriod.TotalSeconds);
     }
 }
