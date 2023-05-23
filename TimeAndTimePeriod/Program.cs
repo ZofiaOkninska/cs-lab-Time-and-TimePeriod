@@ -6,8 +6,9 @@ namespace TimeAndTimePeriod
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello");
-
+            // Example of Time struct usage
+            Time time1 = new Time(12, 30, 0);
+            Time time2 = new Time(10, 30);
         }
     }
 
