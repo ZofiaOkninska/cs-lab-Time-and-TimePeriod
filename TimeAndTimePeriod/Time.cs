@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace TimeAndTimePeriod
 {
-    public struct Time : IEquatable<Time>
+    /// <param name="Hours">Is an hour of a given timepoint</param>
+    /// <param name="Minutes">Is a minute of a given timepoint</param>
+    /// <param name="Seconds">Is a second of a given timepoint</param>
+    public struct Time : IEquatable<Time>, IComparable<Time>
     {
         #region External properties
         public byte Hours { get; }
@@ -71,9 +74,39 @@ namespace TimeAndTimePeriod
 
         public override int GetHashCode() => (Hours, Minutes, Seconds).GetHashCode();
 
-        public static bool operator ==(Time leftSide, Time rightSide) => leftSide.Equals(rightSide);
+        public static bool operator ==(Time leftSide, Time rightSide) => Equals(leftSide, rightSide);
 
-        public static bool operator !=(Time leftSide, Time rightSide) => !(leftSide.Equals(rightSide));
+        public static bool operator !=(Time leftSide, Time rightSide) => !(Equals(leftSide, rightSide));
+        #endregion
+
+        #region Implementation of IComparable<Time>
+        public int CompareTo(object obj)
+        {
+            if (obj == null)
+                return 1;
+
+            if (!(obj is Time))
+                throw new ArgumentException("Compare to object must be a Time", "obj");
+
+            return CompareTo((Time)obj);
+        }
+
+        public int CompareTo(Time other)
+        {
+            if (Hours != other.Hours)
+                return Hours.CompareTo(other.Hours);
+            if (Minutes != other.Minutes)
+                return Minutes.CompareTo(other.Minutes);
+            return Seconds.CompareTo(other.Seconds);
+        }
+
+        public static bool operator <(Time time1, Time time2) => time1.CompareTo(time2) < 0;
+
+        public static bool operator <=(Time time1, Time time2) => time1.CompareTo(time2) <= 0;
+
+        public static bool operator >(Time time1, Time time2) => time1.CompareTo(time2) > 0;
+
+        public static bool operator >=(Time time1, Time time2) => time1.CompareTo(time2) >= 0;
         #endregion
     }
 }

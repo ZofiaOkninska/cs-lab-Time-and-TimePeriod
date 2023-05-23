@@ -1,5 +1,4 @@
 namespace TimeAndTimePeriodUnitTests;
-
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TimeAndTimePeriod;
 
@@ -91,7 +90,118 @@ public class UnitTest1
     {
         Time time1 = new Time(10, 20, 30);
         Time time2 = new Time(10, 20, 30);
-        Assert.IsTrue(Equals(time1,time2));
+        Assert.IsTrue(Time.Equals(time1,time2));
     }
 
+    [TestMethod]
+    public void TimeEqualtyOperatorForTwoEqualTimesReturnsTrue()
+    {
+        Time time1 = new Time(10, 20, 30);
+        Time time2 = new Time(10, 20, 30);
+        Assert.IsTrue(time1 == time2);
+    }
+
+    [TestMethod]
+    public void TimeNonEqualtyOperatorForTwoEqualTimesReturnsFalse()
+    {
+        Time time1 = new Time(10, 20, 30);
+        Time time2 = new Time(10, 20, 30);
+        Assert.IsFalse(time1 != time2);
+    }
+
+    [TestMethod]
+    public void TimeCompareToForNullReturnsOne()
+    {
+        Time time1 = new Time(10, 20, 30);
+        string? str = null;
+        Assert.AreEqual(time1.CompareTo(str),1);
+    }
+
+    [TestMethod]
+    public void TimeCompareToOtherTypeThanTimeThrowsArgumentException()
+    { 
+        Time time1 = new Time(10, 20, 30);
+        string str = "11:11:11";
+        Assert.ThrowsException<ArgumentException>(() => time1.CompareTo(str));
+    }
+
+    [TestMethod]
+    public void Time_CompareTo_LessThan_ReturnsNegativeValue()
+    {
+        Time time1 = new Time(10, 20, 30);
+        Time time2 = new Time(12, 0, 0);
+        Assert.IsTrue(time1.CompareTo(time2) < 0);
+    }
+
+    [TestMethod]
+    public void Time_CompareTo_GreaterThan_ReturnsPositiveValue()
+    {
+        Time time1 = new Time(14, 30, 0);
+        Time time2 = new Time(12, 40, 40);
+        Assert.IsTrue(time1.CompareTo(time2) > 0);
+    }
+
+    [DataTestMethod]
+    [DataRow((byte)12, (byte)10, (byte)10, (byte)14, (byte)5, (byte)5, true)]
+    [DataRow((byte)12, (byte)10, (byte)10, (byte)12, (byte)5, (byte)5, false)]
+    [DataRow((byte)12, (byte)10, (byte)10, (byte)12, (byte)10, (byte)5, false)]
+    public void Time_LessThanOperator_ReturnsExpectedResult(byte hours1, byte min1, byte sec1,
+                                                     byte hours2, byte min2, byte sec2,
+                                                     bool expectedResult)
+    {
+        Time time1 = new Time(hours1, min1, sec1);
+        Time time2 = new Time(hours2, min2, sec2);
+
+        bool result = time1 < time2;
+
+        Assert.AreEqual(expectedResult, result);
+    }
+
+    [DataTestMethod]
+    [DataRow((byte)12, (byte)10, (byte)10, (byte)12, (byte)10, (byte)10, true)]
+    [DataRow((byte)12, (byte)10, (byte)10, (byte)12, (byte)5, (byte)5, false)]
+    [DataRow((byte)12, (byte)10, (byte)10, (byte)12, (byte)10, (byte)5, false)]
+    public void Time_LessThanOrEqualOperator_ReturnsExpectedResult(byte hours1, byte min1, byte sec1,
+                                                     byte hours2, byte min2, byte sec2,
+                                                     bool expectedResult)
+    {
+        Time time1 = new Time(hours1, min1, sec1);
+        Time time2 = new Time(hours2, min2, sec2);
+
+        bool result = time1 <= time2;
+
+        Assert.AreEqual(expectedResult, result);
+    }
+
+    [DataTestMethod]
+    [DataRow((byte)12, (byte)10, (byte)10, (byte)14, (byte)5, (byte)5, false)]
+    [DataRow((byte)12, (byte)10, (byte)10, (byte)12, (byte)5, (byte)5, true)]
+    [DataRow((byte)12, (byte)10, (byte)10, (byte)12, (byte)10, (byte)5, true)]
+    public void Time_GreaterThanOperator_ReturnsExpectedResult(byte hours1, byte min1, byte sec1,
+                                                     byte hours2, byte min2, byte sec2,
+                                                     bool expectedResult)
+    {
+        Time time1 = new Time(hours1, min1, sec1);
+        Time time2 = new Time(hours2, min2, sec2);
+
+        bool result = time1 > time2;
+
+        Assert.AreEqual(expectedResult, result);
+    }
+
+    [DataTestMethod]
+    [DataRow((byte)12, (byte)10, (byte)10, (byte)12, (byte)10, (byte)10, true)]
+    [DataRow((byte)12, (byte)10, (byte)10, (byte)12, (byte)5, (byte)5, true)]
+    [DataRow((byte)12, (byte)10, (byte)10, (byte)12, (byte)10, (byte)5, true)]
+    public void Time_GreaterThanOrEqualOperator_ReturnsExpectedResult(byte hours1, byte min1, byte sec1,
+                                                      byte hours2, byte min2, byte sec2,
+                                                      bool expectedResult)
+    {
+        Time time1 = new Time(hours1, min1, sec1);
+        Time time2 = new Time(hours2, min2, sec2);
+
+        bool result = time1 >= time2;
+
+        Assert.AreEqual(expectedResult, result);
+    }
 }
